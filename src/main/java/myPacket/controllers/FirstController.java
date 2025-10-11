@@ -4,6 +4,7 @@ import myPacket.dto.CalculationRequestDTO;
 import myPacket.dto.CalculationResponseDTO;
 import myPacket.request.Request;
 import myPacket.service.FirstService;
+import myPacket.service.SecondService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,19 +14,21 @@ public class FirstController {
     private final FirstService service1;
     private final Request request1;
     private final CalculationResponseDTO response;
+    private final SecondService service2;
 
     @Autowired
     public FirstController(FirstRepository repo1, FirstService service1,
-                         Request request1, CalculationResponseDTO response) {
+                         Request request1, CalculationResponseDTO response, SecondService service2) {
         this.repo1 = repo1;
         this.service1 = service1;
         this.request1 = request1;
         this.response = response;
+        this.service2 = service2;
     }
 
     @PostMapping("/run")
     public CalculationResponseDTO run(@RequestBody CalculationRequestDTO request) {
-        calculateResultAndCreateOrUpdate(request);
+        service2.callCalculateResultAndCreateOrUpdate(request);
         return response;
     }
 
