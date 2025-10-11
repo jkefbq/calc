@@ -11,18 +11,15 @@ import org.springframework.stereotype.Service;
 public class FirstService {
 
     public String calculateResult(CalculationRequestDTO request) {
-        String symbol = request.getSymbol();
         int a = request.getA();
         int b = request.getB();
-        String result;
 
-        result = switch (symbol) {
+        return switch (request.getSymbol()) {
             case "-" -> Integer.toString(a - b);
             case "+" -> Integer.toString(a + b);
             case "/" -> Integer.toString(a / b);
             case "*" -> Integer.toString(a * b);
             default -> "error";
         };
-        return result;
     }
 }

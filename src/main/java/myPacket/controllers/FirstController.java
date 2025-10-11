@@ -1,4 +1,5 @@
 package myPacket.controllers;
+import lombok.AllArgsConstructor;
 import myPacket.FirstRepository;
 import myPacket.dto.CalculationRequestDTO;
 import myPacket.dto.CalculationResponseDTO;
@@ -8,6 +9,7 @@ import myPacket.service.SecondService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+@AllArgsConstructor
 @RestController
 public class FirstController {
     private final FirstRepository repo1;
@@ -15,16 +17,6 @@ public class FirstController {
     private final Request request1;
     private final CalculationResponseDTO response;
     private final SecondService service2;
-
-    @Autowired
-    public FirstController(FirstRepository repo1, FirstService service1,
-                         Request request1, CalculationResponseDTO response, SecondService service2) {
-        this.repo1 = repo1;
-        this.service1 = service1;
-        this.request1 = request1;
-        this.response = response;
-        this.service2 = service2;
-    }
 
     @PostMapping("/run")
     public CalculationResponseDTO run(@RequestBody CalculationRequestDTO request) {
@@ -36,8 +28,7 @@ public class FirstController {
     public void calculateResultAndCreateOrUpdate(CalculationRequestDTO request) {
         String res = service1.calculateResult(request);
 
-        if (repo1.hasSymbol(request.getSymbol()) > 0 &&
-                !res.equals("error")) {
+        if (repo1.hasSymbol(request.getSymbol()) > 0 && !res.equals("error")) {
             repo1.updateRequest(res, request.getSymbol());
         } else if (!res.equals("error")){
             request1.setResult(res);
