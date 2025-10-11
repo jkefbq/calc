@@ -1,11 +1,8 @@
 package myPacket.service;
 
 import lombok.Getter;
-import myPacket.FirstRepository;
 import myPacket.controllers.FirstController;
 import myPacket.dto.CalculationRequestDTO;
-import myPacket.dto.CalculationResponseDTO;
-import myPacket.request.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
