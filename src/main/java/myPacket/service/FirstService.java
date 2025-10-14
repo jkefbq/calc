@@ -1,12 +1,8 @@
 package myPacket.service;
 
-import lombok.Getter;
-import lombok.Setter;
 import myPacket.dto.CalculationRequestDTO;
 import org.springframework.stereotype.Service;
 
-@Getter
-@Setter
 @Service
 public class FirstService {
 
