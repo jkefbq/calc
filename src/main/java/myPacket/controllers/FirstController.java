@@ -1,13 +1,13 @@
 package myPacket.controllers;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import myPacket.FirstRepository;
-import myPacket.dto.CalculationRequestDTO;
-import myPacket.dto.CalculationResponseDTO;
-import myPacket.request.Request;
+import myPacket.entity.EntityTwo;
+import myPacket.repos.FirstRepository;
+import myPacket.dto.RequestDTO;
+import myPacket.dto.ResponseDTO;
+import myPacket.entity.EntityOne;
+import myPacket.repos.SecondRepository;
 import myPacket.service.FirstService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,45 +17,50 @@ import org.springframework.web.bind.annotation.*;
 public class FirstController {
 
     private final FirstRepository repo1;
+    private final SecondRepository repo2;
     private final FirstService service1;
-    private final Request requestEntity;
-    private final CalculationResponseDTO response;
-    ObjectMapper objectMapper;
+    private final ResponseDTO response;
 
     @PostMapping("/processingRequest")
-    public CalculationResponseDTO calculateAndCreateOrUpdate(@RequestBody String jsonMessage) throws JsonProcessingException {
-        CalculationRequestDTO request = objectMapper.readValue(jsonMessage, CalculationRequestDTO.class);
+    public ResponseDTO calculateAndCreateOrUpdate(@RequestBody RequestDTO request) {
+        System.out.println("//////////////////////////////////////////");
         String res = service1.calculateResult(request);
-        String sym = request.getSymbol();
 
-        if ((repo1.hasSymbol(sym) > 0) && (!res.equals("error"))) {
+        if ((repo1.hasSymbol(request.getSymbol()) > 0) && (!res.equals("error"))) {
             return updateRequest(request);
         } else if (!res.equals("error")){
             return createRequest(request);
-        } else { //error
-            response.setResult(res);
-            return response;
         }
+        response.setResult(res);
+        return response;
     }
 
     @PostMapping("/update")
-    public CalculationResponseDTO updateRequest(@RequestBody CalculationRequestDTO request) {
-        String res = service1.calculateResult(request);
+    public ResponseDTO updateRequest(@RequestBody RequestDTO request) {
 
-        repo1.updateRequest(res, request.getSymbol());
+        String res = service1.calculateResult(request);
+        repo2.updateEntityTwo(res, request.getA(), request.getB(), request.getSymbol());
         response.setResult(res);
         log.info("UPDATE");
+
         return response;
     }
 
     @PostMapping("/create")
-    public CalculationResponseDTO createRequest(@RequestBody CalculationRequestDTO request) {
-        String res = service1.calculateResult(request);
+    public ResponseDTO createRequest(@RequestBody RequestDTO request) {
+        EntityOne entityOne = new EntityOne();
+        EntityTwo entityTwo = new EntityTwo();
 
-        requestEntity.setResult(res);
-        requestEntity.setSymbol(request.getSymbol());
-        repo1.save(requestEntity);
-        response.setResult(res);
+        entityOne.setSymbol(request.getSymbol());
+        repo1.save(entityOne);
+
+        entityTwo.setSymbol_id(request.getSymbol()); //table two
+        entityTwo.setResult(service1.calculateResult(request));
+        entityTwo.setNum_1(request.getA());
+        entityTwo.setNum_2(request.getB());
+        repo2.save(entityTwo);
+
+        response.setResult(service1.calculateResult(request));
         log.info("CREATE");
         return response;
     }

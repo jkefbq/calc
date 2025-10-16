@@ -11,6 +11,6 @@ import org.springframework.stereotype.Component;
 @NoArgsConstructor
 @Setter
 @Getter
-public class CalculationResponseDTO {
+public class ResponseDTO {
     private String result;
 }

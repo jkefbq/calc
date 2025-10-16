@@ -1,7 +1,7 @@
-package myPacket;
+package myPacket.repos;
 
 import jakarta.transaction.Transactional;
-import myPacket.request.Request;
+import myPacket.entity.EntityOne;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,13 +9,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FirstRepository extends JpaRepository<Request, Integer> {
+public interface FirstRepository extends JpaRepository<EntityOne, Integer> {
 
-    @Query("SELECT COUNT(*) FROM Request WHERE symbol = :sym")
+    @Query("SELECT COUNT(*) FROM EntityOne WHERE symbol = :sym")
     int hasSymbol(@Param("sym") String sym);
-
-    @Modifying
-    @Transactional
-    @Query("UPDATE Request SET result = :newResult WHERE symbol = :sym")
-    void updateRequest(@Param("newResult") String res, @Param("sym") String sym);
 }

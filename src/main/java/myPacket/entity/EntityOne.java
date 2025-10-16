@@ -1,4 +1,4 @@
-package myPacket.request;
+package myPacket.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,15 +12,14 @@ import org.springframework.stereotype.Component;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Request {
+public class EntityOne {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String symbol;
-    private String result;
 
-    public Request(String symbol, String result) {
+    public EntityOne(String symbol) {
         this.symbol = symbol;
-        this.result = result;
     }
 }
