@@ -1,9 +1,8 @@
 package myPacket.controllers;
 
 import myPacket.dto.RequestDTO;
-import myPacket.dto.ResponseDTO;
-import myPacket.repos.FirstRepository;
-import myPacket.repos.SecondRepository;
+import myPacket.repos.EntityOneRepository;
+import myPacket.repos.EntityTwoRepository;
 import myPacket.service.CalculateService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,13 +18,11 @@ import static org.junit.jupiter.api.Assertions.*;
 class CalcServiceTest {
 
     @Mock
-    private FirstRepository repo1;
+    private EntityOneRepository repo1;
 
     @Mock
-    private SecondRepository repo2;
+    private EntityTwoRepository repo2;
 
-    @Mock
-    private ResponseDTO response;
 
     @InjectMocks
     private CalculateService calcService;
@@ -37,7 +34,7 @@ class CalcServiceTest {
         request.setA(5521);
         request.setB(252);
 
-        String a = calcService.calculateResult(request);
+        calcService.calculateResult(request);
 
         assertEquals(calcService.getA(), request.getA());
         assertEquals(calcService.getB(), request.getB());
@@ -54,7 +51,7 @@ class CalcServiceTest {
             "124, 51, ;", "245, 252, f",
             "13, 561, %", "142, 4782, //",
             "512, 14, null", "41, 12, <",
-            //null => error
+            //null => false
             "14, 25, ,", "242, 52, \b", "42, 252, \r",
              "27, 14, ", "52, 242, \n", //ломает следующую строку
             "123, 2234, null", "null, null, null"

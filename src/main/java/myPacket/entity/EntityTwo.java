@@ -31,4 +31,10 @@ public class EntityTwo {
         this.result = result;
         this.symbolId = symbol_id;
     }
+
+    public static void updateEntityTwo(EntityTwo e2, String result, int num1, int num2) {
+        e2.setResult(result);
+        e2.setNum1(num1);
+        e2.setNum2(num2);
+    }
 }

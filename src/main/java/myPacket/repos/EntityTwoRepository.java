@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface SecondRepository extends JpaRepository<EntityTwo, Integer> {
+public interface EntityTwoRepository extends JpaRepository<EntityTwo, Integer> {
 
     @Query("SELECT e FROM EntityTwo e WHERE e.symbolId = :symbol_id")
     EntityTwo getEntityTwoBySymbolId(@Param("symbol_id") String symbolId);

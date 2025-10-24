@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FirstRepository extends JpaRepository<EntityOne, Integer> {
+public interface EntityOneRepository extends JpaRepository<EntityOne, Integer> {
 
     @Query("SELECT COUNT(*) FROM EntityOne WHERE symbol = :sym")
     int symbolCount(@Param("sym") String sym);
