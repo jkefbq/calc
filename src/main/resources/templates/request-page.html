@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Calculate</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<form action="http://localhost:8080/calc" method="post"
+th:object="${requestDTO}">
+
+    <div class="container">
+        <label for="a">A:</label>
+        <input type="number" name="a"
+        th:field="*{a}" id="a"/>
+    </div>
+    <div class="container">
+        <label for="b">B:</label>
+        <input type="number" name="b"
+        th:field="*{b}" id="b"/>
+    </div>
+    <div class="container">
+        <label for="symbol">Symbol:</label>
+        <select id="symbol" name="symbol">
+            <option value="*">*</option>
+            <option value="/">/</option>
+            <option value="+">+</option>
+            <option value="-">-</option>
+            th:field="*{symbol}" id="symbol"
+        </select>
+    </div>
+    <button class="container">calculate</button>
+    <div class="container">
+        <b th:text="${result}"></b>
+    </div>
+</form>
+
+</body>
+</html>
