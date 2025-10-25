@@ -15,16 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 class CalcServiceTest {
 
-    @Mock
-    private EntityOneRepository repo1;
-
-    @Mock
-    private EntityTwoRepository repo2;
-
-
     @InjectMocks
     private CalculateService calcService;
-
 
     @ParameterizedTest
     @CsvSource({

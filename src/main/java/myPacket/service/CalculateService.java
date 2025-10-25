@@ -15,7 +15,6 @@ public class CalculateService {
 
     private final EntityOneRepository repo1;
     private final EntityTwoRepository repo2;
-    private String res;
 
     public CalculateService(EntityOneRepository repo1, EntityTwoRepository repo2) {
         this.repo1 = repo1;
@@ -24,9 +23,9 @@ public class CalculateService {
 
     public String calculateResult(String sym, int a, int b) {
         if (!filterNumbers(sym, a, b)) {
-            return res = "error";
+            return "error";
         }
-        return res = switch (sym) {
+        return switch (sym) {
             case "-" -> Integer.toString(a - b);
             case "+" -> Integer.toString(a + b);
             case "/" -> Integer.toString(a / b);
@@ -36,7 +35,6 @@ public class CalculateService {
     }
 
     public boolean filterNumbers(String sym, int a, int b) {
-
         return sym.equals("*") && (a >= 0 && b >= 0) && Integer.MAX_VALUE / b >= a || sym.equals("*") && (a <= 0 && b >= 0) && Integer.MIN_VALUE / b <= a ||
                 sym.equals("*") && (a >= 0 && b <= 0) && Integer.MIN_VALUE / b >= a || sym.equals("*") && (a <= 0 && b <= 0) && (a != Integer.MIN_VALUE && b != Integer.MIN_VALUE) && Integer.MIN_VALUE / b >= Math.abs(a) ||
                 sym.equals("+") && (a >= 0 && b >= 0) && Integer.MAX_VALUE - b >= a || sym.equals("+") && (a <= 0 && b >= 0) && Integer.MAX_VALUE > b ||
