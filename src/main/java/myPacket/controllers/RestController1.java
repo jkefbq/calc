@@ -15,14 +15,17 @@ public class RestController1 {
     private final CalculateService calcService;
 
     @PostMapping("/processingRequest")
-    public void calculateAndCreateOrUpdate(@RequestBody RequestDTO request) {
-        System.out.println("----------------");
-        String res = calcService.calculateResult(request);
+    public void calculateAndCreateOrUpdate(@RequestBody RequestDTO requestDTO) {
+        int a = requestDTO.getA();
+        int b = requestDTO.getB();
+        String sym = requestDTO.getSymbol();
+        String res = calcService.calculateResult(sym, a, b);
 
-        if ((repo1.symbolCount(request.getSymbol()) > 0) && (!res.equals("error"))) {
-            calcService.updateRecord();
+        if ((repo1.symbolCount(sym) > 0) && (!res.equals("error"))) {
+            calcService.updateRecord(res, sym, a, b);
         } else if (!res.equals("error")){
-            calcService.createRecord();
+            calcService.createRecord(res, sym, a, b);
         }
+        System.out.println();
     }
 }

@@ -17,24 +17,26 @@ public class EntityTwo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "symbol_id")
-    private String symbolId;
-    private String result;
+    @OneToOne//(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "symbol_id")
+    private EntityOne entityOne;
+
     @Column(name = "num_1")
     private int num1;
     @Column(name = "num_2")
     private int num2;
+    private String result;
 
-    public EntityTwo(int num1, int num2, String result, String symbol_id) {
+    public EntityTwo(int num1, int num2, String result, EntityOne entityOne) {
         this.num2 = num2;
         this.num1 = num1;
         this.result = result;
-        this.symbolId = symbol_id;
+        this.entityOne = entityOne;
     }
 
-    public static void updateEntityTwo(EntityTwo e2, String result, int num1, int num2) {
-        e2.setResult(result);
-        e2.setNum1(num1);
-        e2.setNum2(num2);
+    public void updateEntityTwo(String result, int num1, int num2) {
+        this.result = result;
+        this.num1 = num1;
+        this.num2 = num2;
     }
 }

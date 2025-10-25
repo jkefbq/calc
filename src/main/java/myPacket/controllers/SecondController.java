@@ -26,7 +26,6 @@ public class SecondController {
 
     @GetMapping("/calc")
     public String calcEmptyPage(Model model) {
-
         if (!model.containsAttribute("requestDTO")) {
             model.addAttribute("requestDTO", new RequestDTO());
         }

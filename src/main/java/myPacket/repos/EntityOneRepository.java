@@ -11,4 +11,7 @@ public interface EntityOneRepository extends JpaRepository<EntityOne, Integer> {
 
     @Query("SELECT COUNT(*) FROM EntityOne WHERE symbol = :sym")
     int symbolCount(@Param("sym") String sym);
+
+    @Query("SELECT e FROM EntityOne e WHERE e.symbol = :sym")
+    EntityOne getBySymbol(@Param("sym") String sym);
 }

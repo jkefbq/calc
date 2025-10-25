@@ -1,10 +1,8 @@
 package myPacket.controllers;
 
-import myPacket.dto.RequestDTO;
 import myPacket.repos.EntityOneRepository;
 import myPacket.repos.EntityTwoRepository;
 import myPacket.service.CalculateService;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -27,20 +25,6 @@ class CalcServiceTest {
     @InjectMocks
     private CalculateService calcService;
 
-    @Test
-    void testCalculateResult_rightSetters() {
-        RequestDTO request = new RequestDTO();
-        request.setSymbol("/");
-        request.setA(5521);
-        request.setB(252);
-
-        calcService.calculateResult(request);
-
-        assertEquals(calcService.getA(), request.getA());
-        assertEquals(calcService.getB(), request.getB());
-        assertEquals(calcService.getSym(), request.getSymbol());
-        assertEquals(calcService.getRes(), calcService.calculateResult(request));
-    }
 
     @ParameterizedTest
     @CsvSource({
@@ -58,8 +42,7 @@ class CalcServiceTest {
 
     })
     void testCalculateResult_IncorrectSymbol(int a, int b, String c) {
-        RequestDTO r = new RequestDTO(a, b, c);
-        assertEquals("error", calcService.calculateResult(r));
+        assertEquals("error", calcService.calculateResult(c, a, b));
     }
 
     @ParameterizedTest //повтор tetsFilterNumbers_expectFalse
@@ -69,8 +52,7 @@ class CalcServiceTest {
             "-2147483647, 2, -", "-1073741824, -1073741825, +", "-2147483648, -1, *"
     })
     void testCalculateResult_IncorrectNumbers(int a, int b, String c) {
-        RequestDTO r = new RequestDTO(a, b, c);
-        assertEquals("error", calcService.calculateResult(r));
+        assertEquals("error", calcService.calculateResult(c, a, b));
     }
 
     @ParameterizedTest
@@ -80,8 +62,7 @@ class CalcServiceTest {
             "-2147483647, 2, -", "-1073741824, -1073741825, +", "-2147483648, -1, *"
     })
     void tetsFilterNumbers_expectFalse(int a, int b, String c) {
-        RequestDTO r = new RequestDTO(a, b, c);
-        assertFalse(calcService.filterNumbers(r));
+        assertFalse(calcService.filterNumbers(c, a, b));
     }
 
     @ParameterizedTest
@@ -92,7 +73,6 @@ class CalcServiceTest {
             "-1073741824, 2, *", "-1, -2147483648, -"
     })
     void tetsFilterNumbers_expectTrue(int a, int b, String c) {
-        RequestDTO r = new RequestDTO(a, b, c);
-        assertTrue(calcService.filterNumbers(r));
+        assertTrue(calcService.filterNumbers(c, a, b));
     }
 }

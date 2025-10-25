@@ -16,21 +16,14 @@ public class CalculateService {
     private final EntityOneRepository repo1;
     private final EntityTwoRepository repo2;
     private String res;
-    private String sym;
-    private int a;
-    private int b;
 
     public CalculateService(EntityOneRepository repo1, EntityTwoRepository repo2) {
         this.repo1 = repo1;
         this.repo2 = repo2;
     }
 
-    public String calculateResult(RequestDTO request) {
-        a = request.getA();
-        b = request.getB();
-        sym = request.getSymbol();
-
-        if (!filterNumbers(request)) {
+    public String calculateResult(String sym, int a, int b) {
+        if (!filterNumbers(sym, a, b)) {
             return res = "error";
         }
         return res = switch (sym) {
@@ -42,10 +35,7 @@ public class CalculateService {
         };
     }
 
-    public boolean filterNumbers(RequestDTO request) {
-        String sym = request.getSymbol(); //для теста
-        int a = request.getA();
-        int b = request.getB();
+    public boolean filterNumbers(String sym, int a, int b) {
 
         return sym.equals("*") && (a >= 0 && b >= 0) && Integer.MAX_VALUE / b >= a || sym.equals("*") && (a <= 0 && b >= 0) && Integer.MIN_VALUE / b <= a ||
                 sym.equals("*") && (a >= 0 && b <= 0) && Integer.MIN_VALUE / b >= a || sym.equals("*") && (a <= 0 && b <= 0) && (a != Integer.MIN_VALUE && b != Integer.MIN_VALUE) && Integer.MIN_VALUE / b >= Math.abs(a) ||
@@ -56,15 +46,15 @@ public class CalculateService {
     }
 
     @Transactional
-    public void createRecord() {
-        new EntityOne(sym);
-        new EntityTwo(a, b, res, sym);
+    public void createRecord(String res, String sym, int a, int b) {
+        repo2.save(new EntityTwo(a, b, res, repo1.save(new EntityOne(sym))));
         System.out.println("CREATE");
     }
 
     @Transactional
-    public void updateRecord() {
-        EntityTwo.updateEntityTwo(repo2.getEntityTwoBySymbolId(sym), res, a, b);
+    public void updateRecord(String res, String sym, int a, int b) {
+        EntityOne entityOne = repo1.getBySymbol(sym);//нашли в 'one' запись с нужным символом
+        repo2.getBySymbolId(entityOne).updateEntityTwo(res, a, b);//нашли в 'two' запись с таким же entityOne => с нужным символом + обновили
         System.out.println("UPDATE");
     }
 }
