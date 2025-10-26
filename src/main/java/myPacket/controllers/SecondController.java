@@ -18,7 +18,7 @@ public class SecondController {
 
     @PostMapping("/calc")
     public String printResult(@ModelAttribute RequestDTO request, Model model) {
-        restController1.calculateAndCreateOrUpdate(request);
+        restController1.calculateAndCreateOrUpdate(request.getA(), request.getB(), request.getSymbol());
         model.addAttribute("result", calcService.calculateResult(request.getSymbol(), request.getA(), request.getB()));
         model.addAttribute("requestDTO", request);
         return "request-page";
@@ -30,5 +30,6 @@ public class SecondController {
             model.addAttribute("requestDTO", new RequestDTO());
         }
         return "request-page";
+
     }
 }

@@ -1,13 +1,10 @@
 package myPacket.controllers;
 
-import myPacket.repos.EntityOneRepository;
-import myPacket.repos.EntityTwoRepository;
 import myPacket.service.CalculateService;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -31,7 +28,6 @@ class CalcServiceTest {
             "14, 25, ,", "242, 52, \b", "42, 252, \r",
              "27, 14, ", "52, 242, \n", //ломает следующую строку
             "123, 2234, null", "null, null, null"
-
     })
     void testCalculateResult_IncorrectSymbol(int a, int b, String c) {
         assertEquals("error", calcService.calculateResult(c, a, b));
@@ -54,7 +50,7 @@ class CalcServiceTest {
             "-2147483647, 2, -", "-1073741824, -1073741825, +", "-2147483648, -1, *"
     })
     void tetsFilterNumbers_expectFalse(int a, int b, String c) {
-        assertFalse(calcService.filterNumbers(c, a, b));
+        assertFalse(calcService.filterNumbers(a, b, c));
     }
 
     @ParameterizedTest
@@ -65,6 +61,6 @@ class CalcServiceTest {
             "-1073741824, 2, *", "-1, -2147483648, -"
     })
     void tetsFilterNumbers_expectTrue(int a, int b, String c) {
-        assertTrue(calcService.filterNumbers(c, a, b));
+        assertTrue(calcService.filterNumbers(a, b, c));
     }
 }
